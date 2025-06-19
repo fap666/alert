@@ -1,25 +1,31 @@
 document.addEventListener('DOMContentLoaded', function() {
   const video = document.getElementById('scanVideo');
   
-  // First try to play automatically (may fail due to browser restrictions)
-  const tryAutoPlay = video.play().catch(e => {
-    console.log("Autoplay blocked, waiting for user interaction");
-  });
-
-  // Fallback: Play on any user interaction
-  const playOnInteraction = () => {
-    video.play()
-      .then(() => {
-        // Successfully started playback
-        document.removeEventListener('click', playOnInteraction);
-        document.removeEventListener('touchstart', playOnInteraction);
-        enterFullscreen();
-      })
-      .catch(e => console.log("Playback failed:", e));
-  };
-
-  document.addEventListener('click', playOnInteraction, { once: true });
-  document.addEventListener('touchstart', playOnInteraction, { once: true });
+  // 1. Preload video metadata
+  video.load();
+  
+  // 2. Attempt autoplay with better error handling
+  video.play()
+    .then(() => {
+      enterFullscreen();
+    })
+    .catch(e => {
+      console.log("Autoplay blocked, waiting for interaction");
+      
+      // 3. Fallback: Play on user tap/click
+      const playVideo = () => {
+        video.play()
+          .then(() => {
+            document.removeEventListener('click', playVideo);
+            document.removeEventListener('touchstart', playVideo);
+            enterFullscreen();
+          })
+          .catch(e => console.error("Playback failed:", e));
+      };
+      
+      document.addEventListener('click', playVideo, { once: true });
+      document.addEventListener('touchstart', playVideo, { once: true });
+    });
 
   video.addEventListener('ended', showScamAlert);
 });
