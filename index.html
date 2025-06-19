@@ -6,14 +6,16 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
- <div id="virusScan">
-    <video id="scanVideo" autoplay muted playsinline webkit-playsinline preload="auto">
+  <!-- Video Container with Fallback Image -->
+  <div id="virusScan">
+    <video id="scanVideo" autoplay muted playsinline webkit-playsinline>
       <source src="assets/video.mp4" type="video/mp4">
-      <source src="assets/video.webm" type="video/webm">
-      Your browser does not support HTML5 video.
+      Your browser does not support the video tag.
     </video>
+    <!-- Fallback Image (hidden by default) -->
+    <img id="fallbackImage" src="assets/warning_fallback.jpg" alt="Warning" class="hidden">
   </div>
+
 
   <!-- ✅ scamAlert hidden initially -->
   <div id="scamAlert" class="hidden">
