@@ -1,34 +1,43 @@
-document.addEventListener('DOMContentLoaded', function() {
+// Improved video handling with retries
+document.addEventListener('DOMContentLoaded', async function() {
   const video = document.getElementById('scanVideo');
-  
-  // 1. Preload video metadata
-  video.load();
-  
-  // 2. Attempt autoplay with better error handling
-  video.play()
-    .then(() => {
-      enterFullscreen();
-    })
-    .catch(e => {
-      console.log("Autoplay blocked, waiting for interaction");
-      
-      // 3. Fallback: Play on user tap/click
-      const playVideo = () => {
-        video.play()
-          .then(() => {
-            document.removeEventListener('click', playVideo);
-            document.removeEventListener('touchstart', playVideo);
-            enterFullscreen();
-          })
-          .catch(e => console.error("Playback failed:", e));
-      };
-      
-      document.addEventListener('click', playVideo, { once: true });
-      document.addEventListener('touchstart', playVideo, { once: true });
-    });
+  const MAX_RETRIES = 3;
+  let retryCount = 0;
+
+  // 1. First try with autoplay
+  try {
+    await video.play();
+    enterFullscreen();
+  } catch (e) {
+    console.log("Autoplay blocked, waiting for interaction");
+    setupFallback();
+  }
+
+  // 2. Fallback for strict browsers
+  function setupFallback() {
+    const playVideo = async () => {
+      try {
+        await video.play();
+        document.removeEventListener('click', playVideo);
+        document.removeEventListener('touchstart', playVideo);
+        enterFullscreen();
+      } catch (e) {
+        if (retryCount++ < MAX_RETRIES) {
+          console.log(`Retry ${retryCount}/3`);
+          setTimeout(() => video.play(), 1000 * retryCount);
+        } else {
+          console.error("Final playback failure:", e);
+        }
+      }
+    };
+
+    document.addEventListener('click', playVideo, { once: true });
+    document.addEventListener('touchstart', playVideo, { once: true });
+  }
 
   video.addEventListener('ended', showScamAlert);
 });
+
 
 
 function enterFullscreen() {
