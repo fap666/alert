@@ -8,12 +8,12 @@
 <body>
 
   <!-- ✅ FIXED: Correct ID used -->
-  <div id="virusScan">
-  <video id="scanVideo" autoplay muted playsinline>
-    <source src="assets/video.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-</div>
+  <video id="scanVideo" autoplay muted playsinline loop>
+  <source src="assets/video.mp4" type="video/mp4">
+  <!-- Fallback for unsupported browsers -->
+  <source src="assets/video.webm" type="video/webm">
+  Your browser does not support HTML5 video.
+</video>
 
   <!-- ✅ scamAlert hidden initially -->
   <div id="scamAlert" class="hidden">
