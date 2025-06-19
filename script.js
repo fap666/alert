@@ -1,25 +1,19 @@
 document.addEventListener('DOMContentLoaded', function () {
   const video = document.getElementById('scanVideo');
 
-  // Force play after first tap
-  document.addEventListener('click', () => {
+  // ✅ Force video to play on user interaction (mobile-safe)
+  const tryPlay = () => {
     video.play().catch(() => {});
-  });
+    enterFullscreen(); // optional: enter fullscreen
+  };
 
-  // When video ends, show scam page
+  // Trigger once
+  document.addEventListener('click', tryPlay, { once: true });
+  document.addEventListener('touchstart', tryPlay, { once: true });
+
+  // ✅ Show scam alert after video ends
   video.addEventListener('ended', showScamAlert);
-
-  // Fullscreen on tap
-  document.addEventListener('click', enterFullscreen);
-  document.addEventListener('touchstart', enterFullscreen);
 });
-
-function enterFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {});
-  }
-}
-
 function showScamAlert() {
   document.getElementById('virusScan').classList.add('hidden');
   document.getElementById('scamAlert').classList.remove('hidden');
