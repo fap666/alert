@@ -1,64 +1,53 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const video = document.getElementById('Video');
-    const siren = document.getElementById('siren');
-    
-    // Set video end handler
-    video.addEventListener('ended', showScamAlert);
-    
-    // Enter fullscreen on interaction
-    document.addEventListener('click', enterFullscreen);
-    document.addEventListener('touchstart', enterFullscreen);
+document.addEventListener('DOMContentLoaded', function () {
+  const video = document.getElementById('scanVideo'); // ✅ Correct ID
+  const siren = document.getElementById('siren');
+
+  // Wait for video to end before showing alert
+  video.addEventListener('ended', showScamAlert);
+
+  // Fullscreen on tap
+  document.addEventListener('click', enterFullscreen);
+  document.addEventListener('touchstart', enterFullscreen);
 });
 
 function enterFullscreen() {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(console.log);
-    }
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  }
 }
 
 function showScamAlert() {
-    document.getElementById('virusScan').classList.add('hidden');
-    document.getElementById('scamAlert').classList.remove('hidden');
-    
-    // Start effects
-    document.body.classList.add('flashing');
-    if ('vibrate' in navigator) navigator.vibrate([500, 200, 500]);
-    document.getElementById('siren').play().catch(console.log);
-    
-    // Start countdown
-    startCountdown();
+  document.getElementById('virusScan').classList.add('hidden');
+  document.getElementById('scamAlert').classList.remove('hidden');
+
+  document.body.classList.add('flashing');
+  if ('vibrate' in navigator) navigator.vibrate([500, 200, 500]);
+
+  // Optional: play siren if element exists
+  const siren = document.getElementById('siren');
+  if (siren) {
+    siren.play().catch(() => {});
+  }
+
+  startCountdown();
 }
 
 function startCountdown() {
-    let time = 600; // 10 minutes
-    const element = document.getElementById('countdown');
-    
-    const timer = setInterval(() => {
-        const minutes = Math.floor(time / 60);
-        const seconds = time % 60;
-        
-        element.textContent = 
-            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        
-        if (--time < 0) {
-            clearInterval(timer);
-            element.textContent = '00:00';
-            element.style.color = 'red';
-        }
-    }, 1000);
+  let time = 600;
+  const element = document.getElementById('countdown');
+
+  const timer = setInterval(() => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    element.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    if (--time < 0) {
+      clearInterval(timer);
+      element.textContent = '00:00';
+      element.style.color = 'red';
+    }
+  }, 1000);
 }
 
-
-// Vibrate + flash screen
-function triggerAlert() {
-    document.body.classList.add("flashing");
-    if ("vibrate" in navigator) navigator.vibrate([500, 200, 500]);
-    siren.play().catch(e => console.log("Audio blocked. Tap screen first:", e));
-}
-
-
-
- // Real UPI Payment Launcher
 function Payment(app) {
   if ("vibrate" in navigator) navigator.vibrate(200);
 
@@ -76,10 +65,10 @@ function Payment(app) {
   window.location.href = upiURL;
 }
 
-// Allow exiting fullscreen
 document.addEventListener('keydown', (e) => {
   if (e.key === 'F11' || e.key === 'Escape') {
     document.exitFullscreen();
   }
-})
+});
+
  
