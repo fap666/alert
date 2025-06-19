@@ -1,8 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const video = document.getElementById('scanVideo'); // ✅ Correct ID
-  const siren = document.getElementById('siren');
+  const video = document.getElementById('scanVideo');
 
-  // Wait for video to end before showing alert
+  // Force play after first tap
+  document.addEventListener('click', () => {
+    video.play().catch(() => {});
+  });
+
+  // When video ends, show scam page
   video.addEventListener('ended', showScamAlert);
 
   // Fullscreen on tap
