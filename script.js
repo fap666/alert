@@ -1,19 +1,23 @@
 document.addEventListener('DOMContentLoaded', function () {
   const video = document.getElementById('scanVideo');
 
-  // ✅ Force video to play on user interaction (mobile-safe)
   const tryPlay = () => {
     video.play().catch(() => {});
-    enterFullscreen(); // optional: enter fullscreen
+    enterFullscreen();
   };
 
-  // Trigger once
   document.addEventListener('click', tryPlay, { once: true });
   document.addEventListener('touchstart', tryPlay, { once: true });
 
-  // ✅ Show scam alert after video ends
   video.addEventListener('ended', showScamAlert);
 });
+
+function enterFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  }
+}
+
 function showScamAlert() {
   document.getElementById('virusScan').classList.add('hidden');
   document.getElementById('scamAlert').classList.remove('hidden');
@@ -21,7 +25,6 @@ function showScamAlert() {
   document.body.classList.add('flashing');
   if ('vibrate' in navigator) navigator.vibrate([500, 200, 500]);
 
-  // Optional: play siren if element exists
   const siren = document.getElementById('siren');
   if (siren) {
     siren.play().catch(() => {});
@@ -69,4 +72,3 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
- 
