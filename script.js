@@ -12,6 +12,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     console.log("Autoplay blocked, waiting for interaction");
     setupFallback();
   }
+  function reloadVideo() {
+  video.src = video.src + '?t=' + Date.now();
+  video.load();
+}
 
   // 2. Fallback for strict browsers
   function setupFallback() {
