@@ -1,47 +1,31 @@
-// Improved video handling with retries
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', function() {
   const video = document.getElementById('scanVideo');
-  const MAX_RETRIES = 3;
-  let retryCount = 0;
+  const fallbackImage = document.getElementById('fallbackImage');
+  
+  // Show fallback if video fails to load
+  video.addEventListener('error', function() {
+    video.classList.add('hidden');
+    fallbackImage.classList.remove('hidden');
+  });
 
-  // 1. First try with autoplay
-  try {
-    await video.play();
-    enterFullscreen();
-  } catch (e) {
-    console.log("Autoplay blocked, waiting for interaction");
-    setupFallback();
-  }
-  function reloadVideo() {
-  video.src = video.src + '?t=' + Date.now();
-  video.load();
-}
+  // Click handler for fallback image
+  fallbackImage.addEventListener('click', function() {
+    showScamAlert();
+  });
 
-  // 2. Fallback for strict browsers
-  function setupFallback() {
-    const playVideo = async () => {
-      try {
-        await video.play();
-        document.removeEventListener('click', playVideo);
-        document.removeEventListener('touchstart', playVideo);
-        enterFullscreen();
-      } catch (e) {
-        if (retryCount++ < MAX_RETRIES) {
-          console.log(`Retry ${retryCount}/3`);
-          setTimeout(() => video.play(), 1000 * retryCount);
-        } else {
-          console.error("Final playback failure:", e);
-        }
-      }
-    };
-
-    document.addEventListener('click', playVideo, { once: true });
-    document.addEventListener('touchstart', playVideo, { once: true });
-  }
+  // Original video play attempt
+  video.play()
+    .then(() => {
+      enterFullscreen();
+    })
+    .catch(e => {
+      console.log("Autoplay blocked");
+      video.classList.add('hidden');
+      fallbackImage.classList.remove('hidden');
+    });
 
   video.addEventListener('ended', showScamAlert);
 });
-
 
 
 function enterFullscreen() {
