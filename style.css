@@ -33,6 +33,10 @@ body {
   object-fit: cover;
   display: block;
 }
+.hidden {
+  display: none;
+}
+
 /* Scam Alert Page */
 #scamAlert {
     position: fixed;
