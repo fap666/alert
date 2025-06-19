@@ -1,53 +1,33 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const video = document.getElementById('scanVideo');
-  const fallbackImage = document.getElementById('fallbackImage');
-  
-  // Show fallback if video fails to load
-  video.addEventListener('error', function() {
-    video.classList.add('hidden');
-    fallbackImage.classList.remove('hidden');
-  });
+  const warningImage = document.getElementById('warningImage');
+  const siren = document.getElementById('siren');
 
-  // Click handler for fallback image
-  fallbackImage.addEventListener('click', function() {
+  // Click/tap on image triggers the scam alert
+  warningImage.addEventListener('click', function() {
     showScamAlert();
+    enterFullscreen();
   });
 
-  // Original video play attempt
-  video.play()
-    .then(() => {
-      enterFullscreen();
-    })
-    .catch(e => {
-      console.log("Autoplay blocked");
-      video.classList.add('hidden');
-      fallbackImage.classList.remove('hidden');
-    });
-
-  video.addEventListener('ended', showScamAlert);
+  // Or automatically proceed after 5 seconds
+  setTimeout(showScamAlert, 5000);
 });
 
-
-function enterFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {});
-  }
-}
-
 function showScamAlert() {
-  document.getElementById('virusScan').classList.add('hidden');
+  document.getElementById('warningScreen').classList.add('hidden');
   document.getElementById('scamAlert').classList.remove('hidden');
-
+  
+  // Start effects
   document.body.classList.add('flashing');
   if ('vibrate' in navigator) navigator.vibrate([500, 200, 500]);
-
+  
+  // Play siren sound
   const siren = document.getElementById('siren');
-  if (siren) {
-    siren.play().catch(() => {});
-  }
-
+  siren.play().catch(e => console.log("Audio blocked:", e));
+  
+  // Start countdown
   startCountdown();
 }
+
 
 function startCountdown() {
   let time = 600;
