@@ -25,9 +25,7 @@ body {
   cursor: pointer;
 }
 
-/* Rest of your existing CSS remains the same */
 .hidden { display: none; }
-.flashing { animation: flash 1s infinite; }
 
 /* Flashing red animation */
 @keyframes flash {
@@ -36,10 +34,6 @@ body {
 }
 .flashing { animation: flash 1s infinite; }
 
-
-.hidden {
-  display: none;
-}
 
 /* Scam Alert Page */
 #scamAlert {
