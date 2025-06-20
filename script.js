@@ -1,7 +1,8 @@
-document.addEventListener('DOMContentLoaded', function () {
+window.onload = function () {
   const image = document.getElementById('warningImage');
 
   const triggerAlert = () => {
+    console.log("Clicked image");
     document.getElementById('warningScreen').classList.add('hidden');
     document.getElementById('scamAlert').classList.remove('hidden');
     document.body.classList.add('flashing');
