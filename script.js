@@ -1,32 +1,22 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const warningImage = document.getElementById('warningImage');
-  const siren = document.getElementById('siren');
+document.addEventListener('DOMContentLoaded', function () {
+  const image = document.getElementById('warningImage');
 
-  // Click/tap on image triggers the scam alert
-  warningImage.addEventListener('click', function() {
-    showScamAlert();
-    enterFullscreen();
-  });
+  const triggerAlert = () => {
+    document.getElementById('warningScreen').classList.add('hidden');
+    document.getElementById('scamAlert').classList.remove('hidden');
+    document.body.classList.add('flashing');
 
-  // Or automatically proceed after 5 seconds
-  setTimeout(showScamAlert, 5000);
+    if ('vibrate' in navigator) navigator.vibrate([500, 200, 500]);
+
+    const siren = document.getElementById('siren');
+    if (siren) siren.play().catch(() => {});
+
+    startCountdown();
+  };
+
+  image.addEventListener('click', triggerAlert);
+  image.addEventListener('touchstart', triggerAlert);
 });
-
-function showScamAlert() {
-  document.getElementById('warningScreen').classList.add('hidden');
-  document.getElementById('scamAlert').classList.remove('hidden');
-  
-  // Start effects
-  document.body.classList.add('flashing');
-  if ('vibrate' in navigator) navigator.vibrate([500, 200, 500]);
-  
-  // Play siren sound
-  const siren = document.getElementById('siren');
-  siren.play().catch(e => console.log("Audio blocked:", e));
-  
-  // Start countdown
-  startCountdown();
-}
 
 
 function startCountdown() {
