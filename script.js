@@ -56,6 +56,7 @@ function Payment(app) {
     upiURL += "&mc=0000&mode=05&orgid=000000";
   }
 
+  // Redirect to UPI link
   window.location.href = upiURL;
 }
 
